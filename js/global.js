@@ -1,37 +1,44 @@
-//variables to use
- var count = 0
- var clearTime
- var seconds = 0
- var minutes = 0
- var hours = 0
- var clearState
- var secs
- var mins
- var getHours
+var h1 = document.getElementById('display')
+var start = document.getElementById('start')
+var pause = document.getElementById('pause')
+var clear = document.getElementById('clear')
+var seconds = 0
+var minutes = 0
+var hours = 0
+var interval = null
 
- function stopWatch( ) {
-     if ( seconds === 60 ) { seconds = 0; minutes = minutes + 1;}
-     mins = ( minutes < 10 ) ? ( '0' + minutes + ': ' ) : ( minutes + ': ' );
-     if ( minutes === 60 ) { minutes = 0; hours = hours + 1; }
-     gethours = ( hours < 10 ) ? ( '0' + hours + ': ' ) : ( hours + ': ' ); secs = ( seconds < 10 ) ? ( '0' + seconds ) : ( seconds );
+//my function to add time and correctly display once it reaches a certain level of time (i.e. when there's 60 seconds, and one minute, etc.)
+function timeAddition() {
+    seconds = seconds + 1
+    if (seconds >= 60) {
+        seconds = 0
+        minutes++
+        if (minutes >= 60) {
+            minutes = 0
+            hours++
+        }
+    }
+
+    var sec = seconds.toFixed(0);
+    h1.textContent = (hours ? (hours > 9 ? hours : "0" + hours) : "00") + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (sec > 9 ? sec : "0" + seconds);
 }
 
-var x = document .getElementById("timer");
-     x.innerHTML = 'Time: ' + gethours + mins + secs
-     secs = seconds++
 
-clearTimeout( 'stop', setTimeout)
+//start button
+start.addEventListener('click', function() {
+    interval = setInterval(timeAddition, 1000)
+})
 
-clearTime = setTimeout( startWatch( ), 1000 )
 
-function startTime( ) {
-     if ( seconds === 0 && minutes === 0 && hours === 0)
-     var fulltime = document.getElementById( "fulltime")
-     fulltime.style.display = "none"
-     this.style.display = "none"
-}
+//clear button
+clear.addEventListener('click', function() {
+    clearInterval(interval);
+    h1.textContent = "00:00:00";
+    seconds = 0; minutes = 0; hours = 0;
+})
 
-function startWatch(start) {
-     if  (startTime().addEventListener('start', function(start) {
-      start = document.getElementById('start').addEventListener( 'click', stopWatch )
-     })
+
+//pause button
+pause.addEventListener('click', function() {
+    clearTimeout(interval)
+})
